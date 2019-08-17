@@ -2,6 +2,20 @@ import React, {Component, Fragment} from 'react';
 import ReactAnimatedWeather from 'react-animated-weather';
 
 export default class CurrentWeather extends Component {
+	getHoursForToday(hourlyForecast) {
+		let idx = 0;
+
+		for(idx; idx < hourlyForecast.length; idx++) {
+			let hour = new Date(hourlyForecast[idx].time * 1000).getHours();
+
+			if(hour === 0) {
+				return idx;
+			}
+		}
+
+		return -1;
+	}
+
 	render() {
 		const { currentWeather } = this.props;
 		const weatherProps = {};
@@ -52,7 +66,6 @@ export default class CurrentWeather extends Component {
 			'icon': 'WIND',
 			'credit': 'Photo by Simon Matzinger from Pexels'
 		};
-
 		weatherProps['fog'] = {
 			'video': 'https://whatever-the-weather.s3.eu-west-2.amazonaws.com/video/fog.mp4',
 			'icon': 'FOG',
@@ -60,6 +73,8 @@ export default class CurrentWeather extends Component {
 		};
 
 		if(currentWeather) {
+			const hourlyForecast = currentWeather.hourly.data.slice(0, this.getHoursForToday(currentWeather.hourly.data));
+
 			card = (
 				<Fragment>
 					<video playsInline autoPlay muted loop width='100%'>
@@ -74,12 +89,26 @@ export default class CurrentWeather extends Component {
 							</h2>
 							<h3 className="card-subtitle mb-2">{ currentWeather.currently.summary }</h3>
 							<p className="card-text">{ 'Feels like ' + currentWeather.currently.apparentTemperature + '˚C' }</p>
+							<br />
+							{/*toDo: hourly summary here*/}
+							<br />
+							<div className="card-group text-center">
+								{ hourlyForecast.map((val, idx) =>
+									<div className="card border-light bg-transparent text-white" key={idx}>
+										<div className="card-body">
+											<p className="card-text">{ hourlyForecast[idx].temperature + '˚'}</p>
+											<p className="card-title"><ReactAnimatedWeather icon={ weatherProps[hourlyForecast[idx].icon].icon } color="white" animate={true} /></p>
+											<em className="card-text">{ new Date(hourlyForecast[idx].time * 1000).getHours().toPrecision(4) }</em>
+										</div>
+									</div>
+								)}
+							</div>
 						</div>
 					</div>
 				</Fragment>
 			)
 		} else {
-			card = <h1>Loading...</h1>
+			card = null
 		}
 
 		return (
