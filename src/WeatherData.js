@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import CurrentWeather from './CurrentWeather';
 import Forecast from './Forecast';
+import Alert from './Alert';
 
 export default class WeatherData extends Component {
 	constructor(props) {
@@ -49,6 +50,9 @@ export default class WeatherData extends Component {
 				</div>
 				<div className="row">
 					<div className="col-lg"><Forecast data={weather}/></div>
+				</div>
+				<div className="row">
+					<div className="col-lg"><Alert alerts={weather}/></div>
 				</div>
 			</Fragment>
 		);

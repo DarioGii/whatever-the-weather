@@ -73,6 +73,7 @@ export default class CurrentWeather extends Component {
 		};
 
 		if(currentWeather) {
+			const hourlySummary = currentWeather.hourly;
 			const hourlyForecast = currentWeather.hourly.data.slice(0, this.getHoursForToday(currentWeather.hourly.data));
 
 			card = (
@@ -90,15 +91,20 @@ export default class CurrentWeather extends Component {
 							<h3 className="card-subtitle mb-2">{ currentWeather.currently.summary }</h3>
 							<p className="card-text">{ 'Feels like ' + currentWeather.currently.apparentTemperature + '˚C' }</p>
 							<br />
-							{/*toDo: hourly summary here*/}
 							<br />
+							<br />
+							<div className="card bg-transparent text-center text-white" style={{ border: 'none' }}>
+								<h2 className="card-title display-3">Today</h2>
+								<h1 className="card-title"><ReactAnimatedWeather icon={ weatherProps[hourlySummary.icon].icon } size={72} color="white" animate={true} /></h1>
+								<h6 className="card-subtitle display-4">{ hourlySummary.summary }</h6>
+							</div>
 							<div className="card-group text-center">
 								{ hourlyForecast.map((val, idx) =>
-									<div className="card border-light bg-transparent text-white" key={idx}>
+									<div className="card border-light bg-transparent" key={idx}>
 										<div className="card-body">
-											<p className="card-text">{ hourlyForecast[idx].temperature + '˚'}</p>
-											<p className="card-title"><ReactAnimatedWeather icon={ weatherProps[hourlyForecast[idx].icon].icon } color="white" animate={true} /></p>
-											<em className="card-text">{ new Date(hourlyForecast[idx].time * 1000).getHours().toPrecision(4) }</em>
+											<p className="card-text text-info">{ hourlyForecast[idx].temperature + '˚'}</p>
+											<p className="card-title"><ReactAnimatedWeather icon={ weatherProps[hourlyForecast[idx].icon].icon } size={32} color="white" animate={true} /></p>
+											<em className="card-text text-warning">{ new Date(hourlyForecast[idx].time * 1000).toLocaleTimeString() }</em>
 										</div>
 									</div>
 								)}
@@ -108,7 +114,7 @@ export default class CurrentWeather extends Component {
 				</Fragment>
 			)
 		} else {
-			card = null
+			card = <h1>Loading...</h1>
 		}
 
 		return (

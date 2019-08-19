@@ -25,9 +25,9 @@ export default class Forecast extends Component {
 
 			dailyForecast = (
 				<Fragment>
-					<br />
-					<div className="card bg-secondary mb-3 text-center text-white">
-						<h3 className="card-title">Next 7 days</h3>
+					<hr />
+					<div className="card bg-secondary text-center text-white shadow-lg p-3 mb-5 rounded">
+						<h3 className="card-title">7 days</h3>
 						<h1 className="card-title"><ReactAnimatedWeather size={66} icon={ weatherIcons[forecastSummary.icon] } color="white" animate={true} /></h1>
 						<h5 className="card-subtitle">{ forecastSummary.summary }</h5>
 					</div>
@@ -36,7 +36,7 @@ export default class Forecast extends Component {
 							<div className="card border-light" key={idx}>
 								<div className="card-body">
 									<h3 className="card-title"><ReactAnimatedWeather size={40} icon={ weatherIcons[forecastData[idx].icon] } animate={true} /> { daysOfTheWeek[new Date(forecastData[idx].time * 1000).getDay()] }</h3>
-									<h6 className="card-subtitle">{'High: ' + forecastData[idx].temperatureHigh + '˚ | Low: ' + forecastData[idx].temperatureLow + '˚'}</h6>
+									<p className="card-subtitle">{'High: ' + forecastData[idx].temperatureHigh + '˚ | Low: ' + forecastData[idx].temperatureLow + '˚'}</p>
 									<em className="card-text">{ forecastData[idx].summary }</em>
 								</div>
 							</div>
