@@ -17,9 +17,10 @@ export default class CurrentWeather extends Component {
 	}
 
 	render() {
-		const { currentWeather } = this.props;
+		const { currentLocation, currentWeather } = this.props;
 		const weatherProps = {};
 		let card;
+		let location;
 
 		weatherProps['clear-day'] = {
 			'video': 'https://whatever-the-weather.s3.eu-west-2.amazonaws.com/video/clear_day.mp4',
@@ -76,6 +77,12 @@ export default class CurrentWeather extends Component {
 			const hourlySummary = currentWeather.hourly;
 			const hourlyForecast = currentWeather.hourly.data.slice(0, this.getHoursForToday(currentWeather.hourly.data));
 
+			if(currentLocation) {
+				location = currentLocation.results[0].address_components[2].long_name;
+			} else {
+				location = currentWeather.timezone;
+			}
+
 			card = (
 				<Fragment>
 					<video playsInline autoPlay muted loop width='100%'>
@@ -83,7 +90,14 @@ export default class CurrentWeather extends Component {
 					</video>
 					<div className="card-img-overlay">
 						<div className="card-body">
-							<h1 className="card-title display-1">{ currentWeather.timezone }</h1>
+							<div className="row">
+								<div className="col-lg"><h1 className="card-title display-1">{ location }</h1></div>
+								<div className="col-lg">
+									<div className="input-group">
+										<input type="text" className="form-control" placeholder="Search" />
+									</div>
+								</div>
+							</div>
 							<h2 className="card-title display-2">
 								<ReactAnimatedWeather size={74} icon={weatherProps[currentWeather.currently.icon].icon}
 								                      animate={true} color="white"/>{ currentWeather.currently.temperature + '˚C' }
@@ -102,9 +116,9 @@ export default class CurrentWeather extends Component {
 								{ hourlyForecast.map((val, idx) =>
 									<div className="card border-light bg-transparent" key={idx}>
 										<div className="card-body">
-											<p className="card-text text-info">{ hourlyForecast[idx].temperature + '˚'}</p>
+											<p className="card-text text-success h4">{ new Date(hourlyForecast[idx].time * 1000).toLocaleTimeString('en-GB', { hour: "numeric", minute: "numeric" }) }</p>
 											<p className="card-title"><ReactAnimatedWeather icon={ weatherProps[hourlyForecast[idx].icon].icon } size={32} color="white" animate={true} /></p>
-											<em className="card-text text-warning">{ new Date(hourlyForecast[idx].time * 1000).toLocaleTimeString() }</em>
+											<strong className="card-text text-warning h4">{ hourlyForecast[idx].temperature + '˚'}</strong>
 										</div>
 									</div>
 								)}

@@ -8,6 +8,7 @@ export default class WeatherData extends Component {
 		super(props);
 
 		this.state = {
+			place: null,
 			weather: null
 		};
 
@@ -33,7 +34,16 @@ export default class WeatherData extends Component {
 					weather: data
 				});
 			})
-			.catch(console.log)
+			.catch(console.log);
+
+		fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + ',' + position.coords.longitude + '&key=AIzaSyA_g_axntOBeFg_egmLNvwHFaSyjtXjSaA')
+			.then(res => res.json())
+			.then((data) => {
+				this.setState({
+					place: data
+				})
+			})
+			.catch(console.log);
 	}
 
 	componentDidMount(position) {
@@ -41,18 +51,18 @@ export default class WeatherData extends Component {
 	}
 
 	render() {
-		const {weather} = this.state;
+		const { place, weather } = this.state;
 
 		return (
 			<Fragment>
 				<div className="row">
-					<CurrentWeather currentWeather={weather}/>
+					<CurrentWeather currentLocation={place} currentWeather={weather}/>
 				</div>
 				<div className="row">
 					<div className="col-lg"><Forecast data={weather}/></div>
 				</div>
 				<div className="row">
-					<div className="col-lg"><Alert alerts={weather}/></div>
+					<div className="col-lg"><Alert alertsData={weather}/></div>
 				</div>
 			</Fragment>
 		);
