@@ -36,7 +36,7 @@ export default class WeatherData extends Component {
 		this.getDetailsForInput(this.state.inputText);
 
 		this.setState({
-			value: '',
+			inputText: '',
 		});
 
 		e.target.reset();
@@ -53,8 +53,7 @@ export default class WeatherData extends Component {
 		const location = navigator.geolocation;
 
 		if (location) {
-			location.getCurrentPosition(this.getCurrentWeatherData);
-			return location.getCurrentPosition(this.getCurrentPlace);
+			return location.getCurrentPosition(this.getCurrentWeatherData);
 		} else {
 			return defaultLocation;
 		}
@@ -69,6 +68,8 @@ export default class WeatherData extends Component {
 				});
 			})
 			.catch(console.log);
+
+		this.getCurrentPlace(position)
 	}
 
 	getCurrentPlace(position) {
@@ -82,24 +83,23 @@ export default class WeatherData extends Component {
 			.catch(console.log);
 	}
 
-	getDetailsForInput(place) {
-		fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + place + '&key=AIzaSyA_g_axntOBeFg_egmLNvwHFaSyjtXjSaA')
+	getDetailsForInput(inputText) {
+		fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + inputText + '&key=AIzaSyA_g_axntOBeFg_egmLNvwHFaSyjtXjSaA')
 			.then(res => res.json())
 			.then((data) => {
-				console.log('data:' + data);
 				this.setState({
 					place: data
 				})
 			})
 			.catch(console.log);
 
-		console.log('state.place:' + this.state.place);
-		// this.getWeatherForInput();
+		console.log('state.place:' + JSON.stringify(this.state.place));
+		this.getWeatherForInput();
 	}
 
 	getWeatherForInput() {
-		let lat = this.state.place.geometry.location.lat;
-		let lng = this.state.place.geometry.location.lng;
+		let lat = this.state.place.results[0].geometry.location.lat;
+		let lng = this.state.place.results[0].geometry.location.lng;
 
 		fetch('https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/0ddc527bd121b8f2f16e3e83a11791a6/' + lat + ',' + lng + '?units=si&exclude=minutely,flags')
 			.then(res => res.json())

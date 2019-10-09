@@ -78,7 +78,7 @@ export default class CurrentWeather extends Component {
 			const hourlyForecast = weather.hourly.data.slice(0, this.getHoursForToday(weather.hourly.data));
 
 			if (place) {
-				location = place.results[0].address_components[2].long_name;
+				location = place.results[0].address_components[0].long_name + ', ' + place.results[0].address_components[1].long_name;
 			} else {
 				location = weather.timezone;
 			}
@@ -94,10 +94,12 @@ export default class CurrentWeather extends Component {
 								<div className="col-lg-9"><h1 className="card-title display-1">{location}</h1></div>
 								<div className="col-lg-3">
 									<div className="input-group input-group-lg mb-3">
-										<form onSubmit={onSubmit}><input type="text" className="form-control" onChange={onChange} placeholder="Search"/></form>
-										<div className="input-group-append">
-											<button className="btn btn-dark" type="button" id="button-addon2" onClick={onClick}>Go</button>
-										</div>
+										<form onSubmit={onSubmit}>
+											<div className="input-group-append">
+												<input type="text" className="form-control" onChange={onChange} placeholder="Search"/>
+												<button className="btn btn-dark" type="button" id="button-addon2" onClick={onClick}>Go</button>
+											</div>
+										</form>
 									</div>
 								</div>
 							</div>
