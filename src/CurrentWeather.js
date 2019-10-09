@@ -5,10 +5,10 @@ export default class CurrentWeather extends Component {
 	getHoursForToday(hourlyForecast) {
 		let idx = 0;
 
-		for(idx; idx < hourlyForecast.length; idx++) {
+		for (idx; idx < hourlyForecast.length; idx++) {
 			let hour = new Date(hourlyForecast[idx].time * 1000).getHours();
 
-			if(hour === 0) {
+			if (hour === 0) {
 				return idx;
 			}
 		}
@@ -17,7 +17,7 @@ export default class CurrentWeather extends Component {
 	}
 
 	render() {
-		const { currentLocation, currentWeather } = this.props;
+		const { onClick, onChange, onSubmit, place, weather } = this.props;
 		const weatherProps = {};
 		let card;
 		let location;
@@ -73,52 +73,61 @@ export default class CurrentWeather extends Component {
 			'credit': 'Photo by Pixabay from Pexels'
 		};
 
-		if(currentWeather) {
-			const hourlySummary = currentWeather.hourly;
-			const hourlyForecast = currentWeather.hourly.data.slice(0, this.getHoursForToday(currentWeather.hourly.data));
+		if (weather) {
+			const hourlySummary = weather.hourly;
+			const hourlyForecast = weather.hourly.data.slice(0, this.getHoursForToday(weather.hourly.data));
 
-			if(currentLocation) {
-				location = currentLocation.results[0].address_components[2].long_name;
+			if (place) {
+				location = place.results[0].address_components[2].long_name;
 			} else {
-				location = currentWeather.timezone;
+				location = weather.timezone;
 			}
 
 			card = (
 				<Fragment>
 					<video playsInline autoPlay muted loop width='100%'>
-						<source src={ weatherProps[currentWeather.currently.icon].video } type="video/mp4" />
+						<source src={weatherProps[weather.currently.icon].video} type="video/mp4"/>
 					</video>
 					<div className="card-img-overlay">
 						<div className="card-body">
 							<div className="row">
-								<div className="col-lg"><h1 className="card-title display-1">{ location }</h1></div>
-								<div className="col-lg">
-									<div className="input-group">
-										<input type="text" className="form-control" placeholder="Search" />
+								<div className="col-lg-9"><h1 className="card-title display-1">{location}</h1></div>
+								<div className="col-lg-3">
+									<div className="input-group input-group-lg mb-3">
+										<form onSubmit={onSubmit}><input type="text" className="form-control" onChange={onChange} placeholder="Search"/></form>
+										<div className="input-group-append">
+											<button className="btn btn-dark" type="button" id="button-addon2" onClick={onClick}>Go</button>
+										</div>
 									</div>
 								</div>
 							</div>
 							<h2 className="card-title display-2">
-								<ReactAnimatedWeather size={74} icon={weatherProps[currentWeather.currently.icon].icon}
-								                      animate={true} color="white"/>{ currentWeather.currently.temperature + '˚C' }
+								<ReactAnimatedWeather size={74} icon={weatherProps[weather.currently.icon].icon}
+								                      animate={true} color="white"/>{weather.currently.temperature + '˚C'}
 							</h2>
-							<h3 className="card-subtitle mb-2">{ currentWeather.currently.summary }</h3>
-							<p className="card-text">{ 'Feels like ' + currentWeather.currently.apparentTemperature + '˚C' }</p>
-							<br />
-							<br />
-							<br />
-							<div className="card bg-transparent text-center text-white" style={{ border: 'none' }}>
+							<h3 className="card-subtitle mb-2">{weather.currently.summary}</h3>
+							<p className="card-text">{'Feels like ' + weather.currently.apparentTemperature + '˚C'}</p>
+							<br/>
+							<br/>
+							<br/>
+							<div className="card bg-transparent text-center text-white" style={{border: 'none'}}>
 								<h2 className="card-title display-3">Today</h2>
-								<h1 className="card-title"><ReactAnimatedWeather icon={ weatherProps[hourlySummary.icon].icon } size={72} color="white" animate={true} /></h1>
-								<h6 className="card-subtitle display-4">{ hourlySummary.summary }</h6>
+								<h1 className="card-title"><ReactAnimatedWeather icon={weatherProps[hourlySummary.icon].icon} size={72}
+								                                                 color="white" animate={true}/></h1>
+								<h6 className="card-subtitle display-4">{hourlySummary.summary}</h6>
 							</div>
 							<div className="card-group text-center">
-								{ hourlyForecast.map((val, idx) =>
-									<div className="card border-light bg-transparent" key={idx}>
+								{hourlyForecast.map((val, idx) =>
+									<div className="card bg-secondary" key={idx}>
 										<div className="card-body">
-											<p className="card-text text-success h4">{ new Date(hourlyForecast[idx].time * 1000).toLocaleTimeString('en-GB', { hour: "numeric", minute: "numeric" }) }</p>
-											<p className="card-title"><ReactAnimatedWeather icon={ weatherProps[hourlyForecast[idx].icon].icon } size={32} color="white" animate={true} /></p>
-											<strong className="card-text text-warning h4">{ hourlyForecast[idx].temperature + '˚'}</strong>
+											<p
+												className="card-text h5">{new Date(hourlyForecast[idx].time * 1000).toLocaleTimeString('en-GB', {
+												hour: "numeric",
+												minute: "numeric"
+											})}</p>
+											<p className="card-title"><ReactAnimatedWeather icon={weatherProps[hourlyForecast[idx].icon].icon}
+											                                                size={36} color="white" animate={true}/></p>
+											<strong className="card-text text-warning h5">{hourlyForecast[idx].temperature + '˚'}</strong>
 										</div>
 									</div>
 								)}
@@ -132,8 +141,8 @@ export default class CurrentWeather extends Component {
 		}
 
 		return (
-			<div className="card text-white" style={{ border: 'none' }}>
-				{ card }
+			<div className="card text-white" style={{border: 'none'}}>
+				{card}
 			</div>
 		)
 	}
