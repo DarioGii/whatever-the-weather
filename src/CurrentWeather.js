@@ -123,7 +123,7 @@ export default class CurrentWeather extends Component {
 									<div className="card bg-secondary" key={idx}>
 										<div className="card-body">
 											<p
-												className="card-text h5">{new Date(hourlyForecast[idx].time * 1000).toLocaleTimeString('en-GB', {
+												className="card-text text-info h5">{new Date(hourlyForecast[idx].time * 1000).toLocaleTimeString('en-GB', {
 												hour: "numeric",
 												minute: "numeric"
 											})}</p>
@@ -139,7 +139,7 @@ export default class CurrentWeather extends Component {
 				</Fragment>
 			)
 		} else {
-			card = <h1>Loading...</h1>
+			card = <h1 className="text-black-50">Loading...</h1>
 		}
 
 		return (
