@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.js": "/whatever-the-weather/static/js/main.07b2a52a.chunk.js",
+    "main.js.map": "/whatever-the-weather/static/js/main.07b2a52a.chunk.js.map",
+    "runtime~main.js": "/whatever-the-weather/static/js/runtime~main.9d2b34cc.js",
+    "runtime~main.js.map": "/whatever-the-weather/static/js/runtime~main.9d2b34cc.js.map",
+    "static/css/2.266e55a5.chunk.css": "/whatever-the-weather/static/css/2.266e55a5.chunk.css",
+    "static/js/2.60fab531.chunk.js": "/whatever-the-weather/static/js/2.60fab531.chunk.js",
+    "static/js/2.60fab531.chunk.js.map": "/whatever-the-weather/static/js/2.60fab531.chunk.js.map",
+    "index.html": "/whatever-the-weather/index.html",
+    "precache-manifest.b8557bf1271298f1eac5348708d50e3b.js": "/whatever-the-weather/precache-manifest.b8557bf1271298f1eac5348708d50e3b.js",
+    "service-worker.js": "/whatever-the-weather/service-worker.js",
+    "static/css/2.266e55a5.chunk.css.map": "/whatever-the-weather/static/css/2.266e55a5.chunk.css.map"
+  }
+}
