@@ -101,7 +101,7 @@ export default class WeatherData extends Component {
 		let lat = this.state.place.results[0].geometry.location.lat;
 		let lng = this.state.place.results[0].geometry.location.lng;
 
-		fetch('https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/0ddc527bd121b8f2f16e3e83a11791a6/' + lat + ',' + lng + '?units=si&exclude=minutely,flags')
+		fetch('https://api.darksky.net/forecast/0ddc527bd121b8f2f16e3e83a11791a6/' + lat + ',' + lng + '?units=si&exclude=minutely,flags')
 			.then(res => res.json())
 			.then((data) => {
 				this.setState({
